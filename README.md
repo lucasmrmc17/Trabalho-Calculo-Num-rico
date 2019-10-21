@@ -1,1 +1,1 @@
-# Trabalho-Calculo-Num-rico
+# Trabalho-Calculo-Numérico
