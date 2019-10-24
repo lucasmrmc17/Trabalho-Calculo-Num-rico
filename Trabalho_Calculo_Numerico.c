@@ -9,6 +9,8 @@ double **alocaMatriz(int L, int C);
 void leMatriz(double **M, int L, int C);
 void imprimeMatriz(double **M, int L, int C);
 void Jordan(double **M, int N);
+int CalculaVariavel (double **M, int N, int *X);
+
 
 int main(){
 	int num_variaveis;
@@ -333,34 +335,77 @@ void imprimeMatriz(double **M, int L, int C){
 
 
 void Jordan(double **M, int N){
-	int i, j, k, c;
-	double mult_baixo, mult_cima, aux;
-	int *x, aux2;
-	x = (int *) malloc(sizeof(int) * N);
+	int i, j, k = 0, c, linha = 0, coluna = 0;
+	double mult, aux, *Resultado_final;
+	int *X, aux2;
+	X = (int *) malloc(sizeof(int) * N);
 	
 	for(i = 0; i < N; i++) {
-		x[i] = i + 1;
+		X[i] = i + 1;
 	}
 	
-	for(i = 0; i< N-1; i++){
+	for(i = 0; i< N; i++){
 		if(M[i][i] == 0){ //Pivô sendo nulo
 			c = i + 1;
-			while(c < N && M[i][c] == 0){
+			
+			while(c < N && M[i][c] == 0){ //Verifica se há alguma coluna que não tem o zero como elemento do pivô
 				c++;
 			}
 					
 			if(c < N){ // troca das colunas
-				aux2 = x[i];
-				x[i] = x[c];
-				x[c] = aux2;
+			// X é um vetor de inteiros que serve para guardar a posição do Xi, caso ocorra a troca das colunas.
+				aux2 = X[i];
+				X[i] = X[c];
+				X[c] = aux2;
 				for(j = 0 ; j < N; j++) {
 					aux = M[j][i];
 					M[j][i] = M[j][c];
 					M[j][c] = aux;
 				}
 			}
+			
 		}
 		
-		
+		if(M[i][i] != 0){
+			for(linha = 0; linha < N; linha++){
+				if (linha != i){
+					mult = -M[linha][i] / M[i][i];
+					M[linha][i] = 0;
+					for(coluna = i + 1; coluna <=N; coluna++){
+						M[linha][coluna] += mult * M[i][coluna];
+					}
+				}
+			}
+		}
+			
 	}
+	
+	//CalculaVariavel (M, N, X);
+
 }
+
+
+/*int CalculaVariavel (double **M, int N, int *X){
+
+	int i, j, k;
+	double *Resultado;
+	
+	for(i = N - 1; i >= 0; i--){
+		for(j = N - 1; j >= 0; j--){
+			for(k = N-1; k >= 0; k--){
+				Resultado[k] = M[i][j];
+			}
+		}
+	}
+	
+	for(i = 0; i < N; i++){
+		Resultado[i] = M[i][N] / Resultado[i];
+		printf("X[%d] = %lf\n", X[i], Resultado[i]);	
+	}
+}*/
+
+
+
+
+
+
