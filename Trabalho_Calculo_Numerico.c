@@ -2,9 +2,9 @@
 #include<stdlib.h>
 #include<math.h>
 
-double* dec2bin(double n);
-double* dec2oct(double n);
-double* dec2hex(double n);
+void dec2bin(double n);
+void dec2oct(double n);
+void dec2hex(double n);
 double **alocaMatriz(int L, int C);
 void leMatriz(double **M, int L, int C);
 void imprimeMatriz(double **M, int L, int C);
@@ -13,18 +13,23 @@ int CalculaVariavel (double **M, int N, int *X);
 
 
 int main(){
+	printf("\n********** Calculo Numerico **********\n\n");
 	int num_variaveis;
 	char escolha;
 	double a, **Matriz, *X;
-		
-	while(escolha != 'F'){
-		printf("Digite uma opcao:\nC - Conversao\nS - Sistema Linear\nE - Equacao Algebrica\nF - Finalizar\n");
+
+	do{
+		printf("Digite uma opcao:\n\nC - Conversao\nS - Sistema Linear\nE - Equacao Algebrica\nF - Finalizar\n\n");
 		scanf("%c", &escolha);
+		getchar();
+		system("cls");
+		
 		switch (escolha){
 		
 			case 'C': 
-				printf("Digite um numero decimal:\n");
+				printf("Digite um numero decimal: ");
 				scanf("%lf", &a);
+				printf("\n");
 				dec2bin(a);
 				dec2oct(a);
 				dec2hex(a);
@@ -52,13 +57,17 @@ int main(){
 				
 			case 'F':
 				printf("Programa Encerrado\n");
-				return 0;
+				break;
+				
+			default:
+				printf("\nOpcao invalida!\n\n");
 		}
-	}
+	} while(escolha!='F');
+	return 0;
 }
 
 
-double* dec2bin(double n){
+void dec2bin(double n){
 	double parte_fra, a;
 	a = n;
 	int  i, c=0;
@@ -99,7 +108,7 @@ double* dec2bin(double n){
 	}
 		
 	// Printando o número binário
-	printf("O binario do numero %lf e: ", a);
+	printf("binario %lf: ", a);
 	for(i=19; i>=0; i--){
 		if(i==0){
 			printf("%d.", vetor_int[i]);
@@ -115,7 +124,7 @@ double* dec2bin(double n){
 	printf("\n");	
 }
 
-double* dec2oct(double n){
+void dec2oct(double n){
 	double parte_fra, a;
 	a = n;
 	int  i, c=0;
@@ -149,7 +158,7 @@ double* dec2oct(double n){
 	}
 		
 	// Printando o número octal
-	printf("O octal   do numero %lf e: ", a);
+	printf("octal %lf: ", a);
 	for(i=19; i>=0; i--){
 		if(i==0){
 			printf("%d.", vetor_int[i]);
@@ -165,7 +174,7 @@ double* dec2oct(double n){
 	printf("\n");
 }
 
-double* dec2hex(double n){
+void dec2hex(double n){
 	double parte_fra, a;
 	a = n;
 	int  i, c=0;
@@ -199,7 +208,7 @@ double* dec2hex(double n){
 	}	
 		
 	// Printando o número hexadecimal
-	printf("O hexal   do numero %lf e: ", a);
+	printf("hexadecimal %lf: ", a);
 	for(i=19; i>=0; i--){
 		if(i==0){
 			if(vetor_int[i]==10){
@@ -224,6 +233,7 @@ double* dec2hex(double n){
 				printf("%d.", vetor_int[i]);
 			}
 		}
+		
 		else{
 			if(vetor_int[i]==10){
 				printf("%c", 65);
@@ -332,13 +342,12 @@ void imprimeMatriz(double **M, int L, int C){
 	}
 } // Fim imprimeMatriz
 
-
-
 void Jordan(double **M, int N){
 	int i, j, k = 0, c, linha = 0, coluna = 0;
-	double mult, aux, *Resultado_final;
+	double mult, aux, *resultado;
 	int *X, aux2;
 	X = (int *) malloc(sizeof(int) * N);
+	resultado = (double*) malloc(sizeof(double) * N);
 	
 	for(i = 0; i < N; i++) {
 		X[i] = i + 1;
@@ -379,30 +388,16 @@ void Jordan(double **M, int N){
 		}
 			
 	}
+	for(i=0; i< N; i++){
+		resultado[i] = M[i][N]/M[i][i];
+	}
 	
-	//CalculaVariavel (M, N, X);
+	for(i=0; i<N; i++){
+		printf("X[%d] = %lf\n", i+1, resultado[i]);
+	}
 
 }
 
-
-/*int CalculaVariavel (double **M, int N, int *X){
-
-	int i, j, k;
-	double *Resultado;
-	
-	for(i = N - 1; i >= 0; i--){
-		for(j = N - 1; j >= 0; j--){
-			for(k = N-1; k >= 0; k--){
-				Resultado[k] = M[i][j];
-			}
-		}
-	}
-	
-	for(i = 0; i < N; i++){
-		Resultado[i] = M[i][N] / Resultado[i];
-		printf("X[%d] = %lf\n", X[i], Resultado[i]);	
-	}
-}*/
 
 
 
